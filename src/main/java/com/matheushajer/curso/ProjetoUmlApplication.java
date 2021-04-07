@@ -13,6 +13,7 @@ import com.matheushajer.curso.domain.Cidade;
 import com.matheushajer.curso.domain.Cliente;
 import com.matheushajer.curso.domain.Endereco;
 import com.matheushajer.curso.domain.Estado;
+import com.matheushajer.curso.domain.ItemPedido;
 import com.matheushajer.curso.domain.Pagamento;
 import com.matheushajer.curso.domain.PagamentoComBoleto;
 import com.matheushajer.curso.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.matheushajer.curso.repositories.CidadeRepository;
 import com.matheushajer.curso.repositories.ClienteRepository;
 import com.matheushajer.curso.repositories.EnderecoRepository;
 import com.matheushajer.curso.repositories.EstadoRepository;
+import com.matheushajer.curso.repositories.ItemPedidoRepository;
 import com.matheushajer.curso.repositories.PagamentoRepository;
 import com.matheushajer.curso.repositories.PedidoRepository;
 import com.matheushajer.curso.repositories.ProdutoRepository;
@@ -48,6 +50,8 @@ public class ProjetoUmlApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetoUmlApplication.class, args);
@@ -114,6 +118,19 @@ public class ProjetoUmlApplication implements CommandLineRunner{
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 
